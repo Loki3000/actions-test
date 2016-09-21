@@ -723,7 +723,7 @@ abstract class DbSimple_Database extends DbSimple_LastError
               |
             (?>
                 # Placeholder
-                (\?) ( [_dsafn&|\#]? )                           #2 #3
+                (\?) ( [_dsafno&|\#]? )                           #2 #3
             )
         }sxS';
         $query = preg_replace_callback(
@@ -835,6 +835,40 @@ abstract class DbSimple_Database extends DbSimple_LastError
                                 $parts[] = $prefix . ($identifier=='*' ? '*' :
                                     $this->escape($this->_addPrefix2Table($identifier), true));
                     }
+                    return join(', ', $parts);
+                case 'o':
+                    if (!$value) $this->_placeholderNoValueFound = true;
+                    if (!is_array($value)){
+                        if ($value instanceof DbSimple_SubQuery)
+                            return $value->get($this->_placeholderNativeArgs);
+                        return $this->escape($this->_addPrefix2Table($value), true).' ASC';
+                    }
+
+                    $parts = array();
+                    foreach ($value as $prefix => $field) {
+                        //превращаем $value в двумерный нуменованный массив
+                        if (!is_array($field)) {
+                            $field = array($prefix => $field);
+                            $prefix = 0;
+                        }
+                        $prefix = is_int($prefix) ? '' :
+                            $this->escape($this->_addPrefix2Table($prefix), true) . '.';
+                        
+                        foreach ($field as $k => $v){
+                            if ($v instanceof DbSimple_SubQuery){
+                                $v = $v->get($this->_placeholderNativeArgs);
+                            }
+
+                            if (!is_int($k)) {
+                                $k = $this->escape($k, true);
+                                $v = (strtoupper($v) === 'ASC') ? 'ASC' : 'DESC';
+                                $parts[] = "$prefix$k $v";
+                            } else {
+                                $parts[] = $prefix.$this->escape($v, true).' ASC';
+                            }
+                        }
+                    }
+                    
                     return join(', ', $parts);
                 case 'n':
                     // NULL-based placeholder.
