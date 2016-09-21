@@ -797,8 +797,26 @@ abstract class DbSimple_Database extends DbSimple_LastError
                             else
                             $v = $v === null? 'NULL' : $this->escape($v);
                             if (!is_int($k)) {
+                                $eq = substr($k, -1);
+                                if (in_array($eq, array('>', '<', '=', '%'))){
+                                    if ($eq == '='){
+                                        $eq_prev = substr($k, -2, 1);
+                                        if ($eq_prev == '>' || $eq_prev == '<'){
+                                            $eq = $eq_prev.$eq;
+                                            $k = substr($k, 0, -1);
+                                        }
+                                    }
+                                    $k = substr($k, 0, -1);
+                                }
+                                else{
+                                    $eq = '=';
+                                }
+
+                                if ($eq == '%'){
+                                    $eq = 'LIKE';
+                                }
                                 $k = $this->escape($k, true);
-                                $parts[] = "$prefix$k=$v";
+                                $parts[] = "$prefix$k $eq $v";
                             } else {
                                 $parts[] = $v;
                             }
