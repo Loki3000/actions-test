@@ -756,7 +756,9 @@ abstract class DbSimple_Database extends DbSimple_LastError
             }
 
             // Value-based placeholder.
-            if (!$this->_placeholderArgs) return 'DBSIMPLE_ERROR_NO_VALUE';
+            if (!$this->_placeholderArgs){
+                return 'DBSIMPLE_ERROR_NO_VALUE';
+            }
             $value = array_pop($this->_placeholderArgs);
 
             // Skip this value?
@@ -768,14 +770,19 @@ abstract class DbSimple_Database extends DbSimple_LastError
             // First process guaranteed non-native placeholders.
             switch ($type) {
                 case 's':
-                    if (!($value instanceof DbSimple_SubQuery))
+                    if (!($value instanceof DbSimple_SubQuery)){
                         return 'DBSIMPLE_ERROR_VALUE_NOT_SUBQUERY';
+                    }
                     return $value->get($this->_placeholderNativeArgs);
                 case '|':
                 case '&':
                 case 'a':
-                    if (!$value) $this->_placeholderNoValueFound = true;
-                    if (!is_array($value)) return 'DBSIMPLE_ERROR_VALUE_NOT_ARRAY';
+                    if (!$value){
+                        $this->_placeholderNoValueFound = true;
+                    }
+                    if (!is_array($value)){
+                        return 'DBSIMPLE_ERROR_VALUE_NOT_ARRAY';
+                    }
                     $parts = array();
                     $multi = array(); //массив для двойной вложенности
                     $mult = $type!='a' || is_int(key($value)) && is_array(current($value));
@@ -788,14 +795,16 @@ abstract class DbSimple_Database extends DbSimple_LastError
                         $prefix = is_int($prefix) ? '' :
                             $this->escape($this->_addPrefix2Table($prefix), true) . '.';
                         //для мультиинсерта очищаем ключи - их быть не может по синтаксису
-                        if ($mult && $type=='a')
+                        if ($mult && $type=='a'){
                             $field = array_values($field);
-                        foreach ($field as $k => $v)
-                        {
-                            if ($v instanceof DbSimple_SubQuery)
+                        }
+                        foreach ($field as $k => $v){
+                            if ($v instanceof DbSimple_SubQuery){
                                 $v = $v->get($this->_placeholderNativeArgs);
-                            else
-                            $v = $v === null? 'NULL' : $this->escape($v);
+                            }
+                            else{
+                                $v = $v === null? 'NULL' : $this->escape($v);
+                            }
                             if (!is_int($k)) {
                                 $eq = substr($k, -1);
                                 if (in_array($eq, array('>', '<', '=', '%'))){
@@ -807,22 +816,23 @@ abstract class DbSimple_Database extends DbSimple_LastError
                                         }
                                     }
                                     $k = substr($k, 0, -1);
+
+                                    if ($eq == '%'){
+                                        $eq = 'LIKE';
+                                    }
                                 }
                                 else{
                                     $eq = '=';
                                 }
 
-                                if ($eq == '%'){
-                                    $eq = 'LIKE';
-                                }
                                 $k = $this->escape($k, true);
                                 $parts[] = "$prefix$k $eq $v";
-                            } else {
+                            } 
+                            else {
                                 $parts[] = $v;
                             }
                         }
-                        if ($mult)
-                        {
+                        if ($mult){
                             $multi[] = join(self::$join[$type]['inner'], $parts);
                             $parts = array();
                         }
@@ -832,33 +842,42 @@ abstract class DbSimple_Database extends DbSimple_LastError
                     // Identifier.
                     if (!is_array($value))
                     {
-                        if ($value instanceof DbSimple_SubQuery)
+                        if ($value instanceof DbSimple_SubQuery){
                             return $value->get($this->_placeholderNativeArgs);
+                        }
                         return $this->escape($this->_addPrefix2Table($value), true);
                     }
                     $parts = array();
                     foreach ($value as $table => $identifiers)
                     {
-                        if (!is_array($identifiers))
+                        if (!is_array($identifiers)){
                             $identifiers = array($identifiers);
+                        }
                         $prefix = '';
-                        if (!is_int($table))
+                        if (!is_int($table)){
                             $prefix = $this->escape($this->_addPrefix2Table($table), true) . '.';
+                        }
                         foreach ($identifiers as $identifier)
-                            if ($identifier instanceof DbSimple_SubQuery)
+                            if ($identifier instanceof DbSimple_SubQuery){
                                 $parts[] = $identifier->get($this->_placeholderNativeArgs);
-                            elseif (!is_string($identifier))
+                            }
+                            elseif (!is_string($identifier)){
                                 return 'DBSIMPLE_ERROR_ARRAY_VALUE_NOT_STRING';
-                            else
+                            }
+                            else{
                                 $parts[] = $prefix . ($identifier=='*' ? '*' :
                                     $this->escape($this->_addPrefix2Table($identifier), true));
+                            }
                     }
                     return join(', ', $parts);
                 case 'o':
-                    if (!$value) $this->_placeholderNoValueFound = true;
+                    if (!$value){
+                        $this->_placeholderNoValueFound = true;
+                    }
                     if (!is_array($value)){
-                        if ($value instanceof DbSimple_SubQuery)
+                        if ($value instanceof DbSimple_SubQuery){
                             return $value->get($this->_placeholderNativeArgs);
+                        }
                         return $this->escape($this->_addPrefix2Table($value), true).' ASC';
                     }
 
@@ -881,7 +900,8 @@ abstract class DbSimple_Database extends DbSimple_LastError
                                 $k = $this->escape($k, true);
                                 $v = (strtoupper($v) === 'ASC') ? 'ASC' : 'DESC';
                                 $parts[] = "$prefix$k $v";
-                            } else {
+                            }
+                            else {
                                 $parts[] = $prefix.$this->escape($v, true).' ASC';
                             }
                         }
@@ -903,7 +923,9 @@ abstract class DbSimple_Database extends DbSimple_LastError
             if ($value === null) return 'NULL';
             switch ($type) {
                 case '':
-                    if (!is_scalar($value)) return 'DBSIMPLE_ERROR_VALUE_NOT_SCALAR';
+                    if (!is_scalar($value)){
+                        return 'DBSIMPLE_ERROR_VALUE_NOT_SCALAR';
+                    }
                     return $this->escape($value);
                 case 'd':
                     return intval($value);
@@ -918,25 +940,28 @@ abstract class DbSimple_Database extends DbSimple_LastError
         if (isset($m[1]) && strlen($block=$m[1]))
         {
             $prev  = $this->_placeholderNoValueFound;
-            if ($this->_placeholderNativeArgs !== null)
+            if ($this->_placeholderNativeArgs !== null){
                 $prevPh = $this->_placeholderNativeArgs;
+            }
 
             // Проверка на {?  } - условный блок
             $skip = false;
-            if ($m[2]=='?')
-            {
+            if ($m[2]=='?'){
                 $skip = array_pop($this->_placeholderArgs) === DBSIMPLE_SKIP;
                 $block[0] = ' ';
             }
 
             $block = $this->_expandOptionalBlock($block);
 
-            if ($skip)
+            if ($skip){
                 $block = '';
+            }
 
-            if ($this->_placeholderNativeArgs !== null)
-                if ($this->_placeholderNoValueFound)
+            if ($this->_placeholderNativeArgs !== null){
+                if ($this->_placeholderNoValueFound){
                     $this->_placeholderNativeArgs = $prevPh;
+                }
+            }
             $this->_placeholderNoValueFound = $prev; // recurrent-safe
             return $block;
         }
@@ -954,8 +979,9 @@ abstract class DbSimple_Database extends DbSimple_LastError
      */
     private function _addPrefix2Table($table)
     {
-        if (substr($table, 0, 2) == '?_')
+        if (substr($table, 0, 2) == '?_'){
             $table = $this->_identPrefix . substr($table, 2);
+        }
         return $table;
     }
 
