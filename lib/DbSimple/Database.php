@@ -806,6 +806,7 @@ abstract class DbSimple_Database extends DbSimple_LastError
                                 $v = $v === null? 'NULL' : $this->escape($v);
                             }
                             if (!is_int($k)) {
+                                $k = trim($k);
                                 $eq = substr($k, -1);
                                 if (in_array($eq, array('>', '<', '=', '%'))){
                                     if ($eq == '='){
@@ -815,7 +816,7 @@ abstract class DbSimple_Database extends DbSimple_LastError
                                             $k = substr($k, 0, -1);
                                         }
                                     }
-                                    $k = substr($k, 0, -1);
+                                    $k = trim(substr($k, 0, -1));
 
                                     if ($eq == '%'){
                                         $eq = 'LIKE';
