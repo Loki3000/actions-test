@@ -1,8 +1,7 @@
 {
-    "name": "dklab/dbsimple",
+    "name": "Loki3000/dbsimple",
     "license": "MIT",
-    "authors": [
-        {
+    "authors": [{
             "name": "Dmitry Koterov",
             "email": "dmitry.koterov@gmail.com"
         },
@@ -13,24 +12,18 @@
         {
             "name": "Stepan Legachev",
             "email": "me@sib.li"
-        }        
-    ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/ivan1986/DbSimple"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/siberex/DbSimple"
         }
     ],
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/Loki3000/DbSimple"
+    }],
     "autoload": {
         "psr-0": {
             "DbSimple": "lib/"
         }
     },
     "require": {
-
+        "php": ">=5.6"
     }
 }
