@@ -1,5 +1,5 @@
 {
-    "name": "Loki3000/dbsimple",
+    "name": "loki3000/dbsimple",
     "license": "MIT",
     "authors": [{
             "name": "Dmitry Koterov",
@@ -16,7 +16,7 @@
     ],
     "repositories": [{
         "type": "vcs",
-        "url": "https://github.com/Loki3000/DbSimple"
+        "url": "https://github.com/loki3000/DbSimple"
     }],
     "autoload": {
         "psr-0": {
