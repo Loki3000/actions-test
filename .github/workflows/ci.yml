@@ -1,0 +1,27 @@
+name: DbDimple Testing
+
+on: [push]
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php-versions }} Tests
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ['ubuntu-latest']
+        php-versions: ['5.6', '7.4', '8.0', '8.1']
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: php-actions/composer@v5
+
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql user: 'test'
+          mysql password: 'test'
+
+      - name: PHPUnit Tests
+        uses: php-actions/phpunit@v2
+        with:
+          configuration: phpunit.xml
