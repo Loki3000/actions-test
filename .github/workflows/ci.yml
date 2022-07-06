@@ -21,7 +21,11 @@ jobs:
           mysql user: 'test'
           mysql password: 'test'
 
-      - name: PHPUnit Tests
-        uses: php-actions/phpunit@v2
+      - uses: shivammathur/setup-php@v2
         with:
-          configuration: phpunit.xml
+          php-version: ${{ matrix.php-versions }}
+          extensions: mysql
+          tools: phpunit/phpunit:9.5
+
+      - name: PHPUnit Tests
+        run: phpunit
