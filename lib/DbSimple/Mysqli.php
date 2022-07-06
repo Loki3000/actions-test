@@ -44,6 +44,7 @@ class DbSimple_Mysqli extends DbSimple_Database
             }
         }
 
+        try {   
         if ( isset($dsn['socket']) ) {
             // Socket connection
             $this->link = mysqli_connect(
@@ -66,9 +67,14 @@ class DbSimple_Mysqli extends DbSimple_Database
         } else {
             return $this->_setDbError('mysqli_connect()');
         }
+        } catch(Exception $e ) {
+            return $this->_setDbError('mysqli_connect()');
+        }
+/*
         $this->_resetLastError();
         if (!$this->link) return $this->_setDbError('mysqli_connect()');
         
+        */
         mysqli_set_charset($this->link, isset($dsn['enc']) ? $dsn['enc'] : 'UTF8');
     }
 
@@ -163,9 +169,11 @@ class DbSimple_Mysqli extends DbSimple_Database
     {
         $this->_lastQuery = $queryMain;
         $this->_expandPlaceholders($queryMain, false);
+        try {   
         $result = mysqli_query($this->link, $queryMain[0]);
-        if ($result === false)
+        } catch(Exception $e ) {
             return $this->_setDbError($queryMain[0]);
+        }
         if (!is_object($result)) {
             if (preg_match('/^\s* INSERT \s+/six', $queryMain[0]))
             {
