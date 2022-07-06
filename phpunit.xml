@@ -5,4 +5,9 @@
             <directory suffix=".phpt">t</directory>
         </testsuite>
     </testsuites>
+    <coverage>
+        <include>
+            <directory suffix=".php">lib</directory>
+        </include>
+    </coverage>
 </phpunit>
