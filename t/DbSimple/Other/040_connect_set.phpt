@@ -2,6 +2,7 @@
 Set prefixes
 --FILE--
 <?php
+$dirname=__DIR__;
 require_once __DIR__ . '/../init_lasy.php';
 
 function main(&$DB)
@@ -20,7 +21,7 @@ function main(&$DB)
 	printr($DB->selectRow($query));
 	$DB->query("UPDATE ?_test SET str='b' WHERE id=1");
 	printr($DB->selectRow($query));
-	var_dump($Cacher->getAll());
+	print_r($Cacher->getAll());
 }
 
 ?>
@@ -45,7 +46,7 @@ array (
   'id' => '1',
   'str' => 'a',
 )
-array(1) {
-  ["db_71ccc35426176e29ea1ce9ffac97041b"]=>
-  string(152) "a:3:{s:10:"invalCache";N;s:6:"result";a:1:{i:0;a:2:{s:2:"id";s:1:"1";s:3:"str";s:1:"a";}}s:4:"rows";a:1:{i:0;a:2:{s:2:"id";s:1:"1";s:3:"str";s:1:"a";}}}"
-}
+Array
+(
+    [db_71ccc35426176e29ea1ce9ffac97041b] => a:3:{s:10:"invalCache";N;s:6:"result";a:1:{i:0;a:2:{s:2:"id";s:1:"1";s:3:"str";s:1:"a";}}s:4:"rows";a:1:{i:0;a:2:{s:2:"id";s:1:"1";s:3:"str";s:1:"a";}}}
+)

@@ -1,6 +1,8 @@
 <?php
 
-require_once __DIR__.'/Interface.php';
+if ( !interface_exists('Zend_Cache_Backend_Interface', false) ) {
+    require_once __DIR__ . '/../../lib/DbSimple/Zend/Cache/Backend/Interface.php';
+}
 
 class TstCacher implements Zend_Cache_Backend_Interface
 {

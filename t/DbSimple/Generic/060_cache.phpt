@@ -2,6 +2,7 @@
 Generic: Zend_Cache usage
 --FILE--
 <?php
+$dirname=__DIR__;
 require_once __DIR__ . '/../init.php';
 
 function main(&$DB)
@@ -18,7 +19,7 @@ function main(&$DB)
 	printr($DB->selectRow($query));
 	$DB->query("UPDATE test SET str='b' WHERE id=1");
 	printr($DB->selectRow($query));
-	var_dump($Cacher->getAll());
+	print_r($Cacher->getAll());
 }
 
 ?>
@@ -43,7 +44,7 @@ array (
   'id' => '1',
   'str' => 'a',
 )
-array(1) {
-  ["e8c047124bb1326506f7144011c8ebaf278351e552185ed67702f0c1326535c0"]=>
-  string(152) "a:3:{s:10:"invalCache";N;s:6:"result";a:1:{i:0;a:2:{s:2:"id";s:1:"1";s:3:"str";s:1:"a";}}s:4:"rows";a:1:{i:0;a:2:{s:2:"id";s:1:"1";s:3:"str";s:1:"a";}}}"
-}
+Array
+(
+    [beea4382f6402c21b926fdb0029d4d26278351e552185ed67702f0c1326535c0] => a:3:{s:10:"invalCache";N;s:6:"result";a:1:{i:0;a:2:{s:2:"id";s:1:"1";s:3:"str";s:1:"a";}}s:4:"rows";a:1:{i:0;a:2:{s:2:"id";s:1:"1";s:3:"str";s:1:"a";}}}
+)

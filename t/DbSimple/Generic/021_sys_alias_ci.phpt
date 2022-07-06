@@ -2,6 +2,7 @@
 Generic: ARRAY_KEY/PARENT_KEY case insensitivity
 --FILE--
 <?php
+$dirname=__DIR__;
 require_once __DIR__ . '/../init.php';
 
 function main(&$DB)

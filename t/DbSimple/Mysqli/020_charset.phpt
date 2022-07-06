@@ -2,6 +2,7 @@
 Mysql: ?# placeholder usage
 --FILE--
 <?php
+$dirname=__DIR__;
 require_once __DIR__ . '/../init.php';
 
 function main(&$DB)
@@ -22,7 +23,7 @@ array (
   0 => 
   array (
     'Variable_name' => 'character_set_client',
-    'Value' => 'utf8',
+    'Value' => 'utf8mb3',
   ),
 )
 

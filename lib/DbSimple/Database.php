@@ -827,7 +827,7 @@ abstract class DbSimple_Database extends DbSimple_LastError
                                 }
 
                                 $k = $this->escape($k, true);
-                                $parts[] = "$prefix$k $eq $v";
+                                $parts[] = $prefix.$k.$eq.$v;
                             } 
                             else {
                                 $parts[] = $v;

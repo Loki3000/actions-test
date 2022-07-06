@@ -1,11 +1,11 @@
 <?php
-$stack = debug_backtrace();
-chdir(dirname(realpath($stack[0]['file'])));
+chdir($dirname);
 
 header("Content-type: text/plain");
 include_once __DIR__ . "/../../lib/config.php";
 ini_set("include_path", ini_get("include_path").PATH_SEPARATOR.__DIR__.'/..'); // for Cache_Lite
-include_once "DbSimple/Connect.php"; 
+include_once "DbSimple/Connect.php";
+include_once "DbSimple/Generic.php";  
 
 $DSN = array();
 

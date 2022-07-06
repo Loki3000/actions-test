@@ -2,6 +2,7 @@
 Mysql: ?# placeholder usage
 --FILE--
 <?php
+$dirname=__DIR__;
 require_once __DIR__ . '/../init.php';
 
 function main(&$DB)
@@ -22,7 +23,7 @@ function main(&$DB)
 --EXPECT--
 Query: 'DROP TABLE test'
 Query: 'CREATE TABLE test(id INTEGER, str VARCHAR(10))'
-Query: 'INSERT INTO test(`id`, `str`) VALUES(\'1\', \'test\')'
+Query: 'INSERT INTO test(`id`, `str`) VALUES(1, \'test\')'
 Query: 'SELECT `id` FROM test'
 array (
   0 => '1',

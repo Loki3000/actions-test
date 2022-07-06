@@ -3,6 +3,7 @@ PostgreSQL: connect twice even with same DSNs
 
 --FILE--
 <?php
+$dirname=__DIR__;
 require_once __DIR__ . '/../init.php';
 
 function main(&$DB)

@@ -3,6 +3,7 @@ PostgreSQL: ?# placeholder usage
 
 --FILE--
 <?php
+$dirname=__DIR__;
 require_once __DIR__ . '/../init.php';
 
 function main(&$DB)

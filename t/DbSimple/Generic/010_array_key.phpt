@@ -2,11 +2,12 @@
 Generic: ARRAY_KEY* usage
 --FILE--
 <?php
+$dirname=__DIR__;
 require_once __DIR__ . '/../init.php';
 
 function main(&$DB)
 {
-	@$DB->query("DROP TABLE test");
+	@$DB->query("DROP TABLE IF EXISTS test");
 	$DB->query("CREATE TABLE test(id INTEGER, pid INTEGER, str VARCHAR(1))");
 	$DB->query("INSERT INTO test(id, pid, str) VALUES(100, 10, 'a')");
 	$DB->query("INSERT INTO test(id, pid, str) VALUES(101, 10, 'b')");
@@ -21,7 +22,7 @@ function main(&$DB)
 
 
 --EXPECT--
-Query: 'DROP TABLE test'
+Query: 'DROP TABLE IF EXISTS test'
 Query: 'CREATE TABLE test(id INTEGER, pid INTEGER, str VARCHAR(1))'
 Query: 'INSERT INTO test(id, pid, str) VALUES(100, 10, \'a\')'
 Query: 'INSERT INTO test(id, pid, str) VALUES(101, 10, \'b\')'
