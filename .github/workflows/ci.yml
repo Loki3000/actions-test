@@ -15,6 +15,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: php-actions/composer@v5
+      
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop
 
       - uses: mirromutth/mysql-action@v1.1
         with:
